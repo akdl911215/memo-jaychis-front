@@ -11,7 +11,7 @@ export default function Header({
   return (
     <div className="text-center">
       {/* 1) Main title */}
-      <h1 className="text-5xl font-bold text-yellow-400">{title}</h1>
+      {/* <h1 className="text-5xl font-bold text-yellow-400">{title}</h1> */}
 
       {/* 2) Subtitle */}
       <p className="text-xs uppercase text-gray-300 tracking-wide mt-1">
