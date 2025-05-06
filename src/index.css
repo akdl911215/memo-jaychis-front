@@ -7,6 +7,7 @@
 
 body,
 html {
+  @apply bg-gradient-to-b from-gray-900 to-gray-800 via-gray-700 min-h-screen;
   margin: 0;
   padding: 0;
   height: 100%;
