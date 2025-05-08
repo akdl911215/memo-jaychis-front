@@ -21,7 +21,7 @@ export default function Home() {
     setSaving(true); 
     const handler = setTimeout(async () => {
       try {
-        await api.post("/memo", { draftId, content: text }); // 2) Do your save
+        await api.post("/memos", { draftId, content: text }); // 2) Do your save
       } catch (e: any) {
         console.error("Error saving memo:", e.message);
       } finally {
