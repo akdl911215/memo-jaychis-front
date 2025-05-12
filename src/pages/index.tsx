@@ -2,35 +2,40 @@
 import Layout from "@/components/Memoir/Layout";
 import Header from "@/components/Memoir/Header";
 import Footer from "@/components/Memoir/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import TiptapEditor from "@/components/Memoir/TiptapEditor";
 import api from "@/lib/api";
-import { getOrSetDraftId } from '@/lib/draftSession';
-
+import { getOrSetDraftId } from "@/lib/draftSession";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function Home() {
+  const draftId = useMemo(() => getOrSetDraftId(), []);
   const [text, setText] = useState<string>("");
+  const [initialText, setInitialText] = useState<string>("");
   const [saving, setSaving] = useState<boolean>(false);
-  
+
   useEffect(() => {
-    if (text === "") return;
-  
-    const draftId = getOrSetDraftId();
-    console.log('draftId : ', draftId);
+    if (!draftId) return;
+    api
+      .get<string>(`/memos/${draftId}`)
+      .then((res) => {
+        setText(res.data);
+        setInitialText(res.data);
+      })
+      .catch((err) => console.error("Load error:", err));
+  }, [draftId]);
 
-    setSaving(true); 
-    const handler = setTimeout(async () => {
-      try {
-        await api.post("/memos", { draftId, content: text }); // 2) Do your save
-      } catch (e: any) {
-        console.error("Error saving memo:", e.message);
-      } finally {
-        setSaving(false); // 3) Turn off spinner when done
-      }
-    }, 1500);
+  const debouncedText = useDebounce(text, 1500);
 
-    return () => clearTimeout(handler);
-  }, [text]);
+  useEffect(() => {
+    if (debouncedText === "" || debouncedText === initialText) return;
+
+    setSaving(true);
+    api
+      .post("/memos", { draftId, content: debouncedText })
+      .catch((err) => console.error("Save error:", err))
+      .finally(() => setSaving(false));
+  }, [debouncedText, draftId, initialText]);
 
   return (
     <Layout>

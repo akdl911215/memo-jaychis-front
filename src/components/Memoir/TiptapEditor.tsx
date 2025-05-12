@@ -1,6 +1,6 @@
 // components/Memoir/TiptapEditor.tsx
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -43,6 +43,14 @@ export default function TiptapEditor({
     },
   });
 
+  useEffect(() => {
+    if (!editor) return;
+    const current = editor.getHTML();
+    if (initialContent !== current) {
+      editor.commands.setContent(initialContent);
+    }
+  }, [initialContent, editor]);
+
   if (!editor) return null;
 
   return (
@@ -76,74 +84,6 @@ export default function TiptapEditor({
         >
           U
         </button>
-        {/* Bullet list */}
-        {/* <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`px-2 py-1 rounded ${
-            editor.isActive("bulletList") ? "bg-gray-200" : ""
-          }`}
-        >
-          • List
-        </button> */}
-        {/* Ordered list */}
-        {/* <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`px-2 py-1 rounded ${
-            editor.isActive("orderedList") ? "bg-gray-200" : ""
-          }`}
-        >
-          1. List
-        </button> */}
-        {/* Blockquote */}
-        {/* <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={`px-2 py-1 rounded ${
-            editor.isActive("blockquote") ? "bg-gray-200" : ""
-          }`}
-        >
-          “ ”
-        </button> */}
-        {/* Code block */}
-        {/* <button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={`px-2 py-1 rounded ${
-            editor.isActive("codeBlock") ? "bg-gray-200" : ""
-          }`}
-        >
-          {"</>"}
-        </button> */}
-        {/* Link */}
-        {/* <button
-          onClick={() => {
-            const attrs = editor.getAttributes("link") || {};
-            const previousUrl =
-              typeof attrs.href === "string" ? attrs.href : "";
-            const url = window.prompt("Enter URL", previousUrl);
-            if (url === null) return;
-            if (url === "") {
-              editor.chain().focus().unsetLink().run();
-            } else {
-              editor
-                .chain()
-                .focus()
-                .extendMarkRange("link")
-                .setLink({ href: url })
-                .run();
-            }
-          }}
-          disabled={
-            !editor
-              .can()
-              .chain()
-              .focus()
-              .extendMarkRange("link")
-              .setLink({ href: "" })
-              .run()
-          }
-          className="px-2 py-1 rounded"
-        >
-          🔗
-        </button> */}
       </div>
 
       {/* ─── Editable Area ─── */}

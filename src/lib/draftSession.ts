@@ -1,11 +1,15 @@
 // lib/draftSession.ts
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-export function getOrSetDraftId() {
+export function getOrSetDraftId(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
   let draftId = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('draftId='))
-    ?.split('=')[1];
+    .split("; ")
+    .find((row) => row.startsWith("draftId="))
+    ?.split("=")[1];
 
   if (!draftId) {
     draftId = uuidv4();
