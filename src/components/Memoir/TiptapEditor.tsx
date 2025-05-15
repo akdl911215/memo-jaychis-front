@@ -87,8 +87,14 @@ export default function TiptapEditor({
       </div>
 
       {/* ─── Editable Area ─── */}
-      <div className="flex-1 overflow-auto prose prose-sm">
-        <EditorContent editor={editor} />
+      <div
+        className="flex-1 overflow-auto"
+        onClick={() => editor.chain().focus().run()}
+      >
+        <EditorContent
+          editor={editor}
+          className="ProseMirror h-full w-full outline-none p-0 m-0 prose prose-sm"
+        />
       </div>
     </div>
   );
