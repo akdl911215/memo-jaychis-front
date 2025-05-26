@@ -18,11 +18,16 @@ export default function Home() {
     if (!draftId) return;
     api
       .get<string>(`/memos/${draftId}`)
-      .then((res) => {
-        setText(res.data);
-        setInitialText(res.data);
+      .then((res: any) => {
+        console.log("res", res);
+
+
+        if (res.status === 200) {
+          setText(res?.data);
+          setInitialText(res?.data);
+        }
       })
-      .catch((err) => console.error("Load error:", err));
+      .catch((err:any) => console.error("Load error:", err));
   }, [draftId]);
 
   const debouncedText = useDebounce(text, 1500);
