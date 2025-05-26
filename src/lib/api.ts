@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://apimemo.jaychis.com';
 
 const api = axios.create({
   baseURL,
@@ -7,6 +7,7 @@ const api = axios.create({
   timeout: 5000,
 });
 console.log("baseURL =", process.env.NEXT_PUBLIC_API_BASE_URL);
+
 
 // Request interceptor (e.g. inject auth token)
 api.interceptors.request.use((config) => {
