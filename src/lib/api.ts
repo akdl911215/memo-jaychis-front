@@ -6,7 +6,7 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
   timeout: 5000,
 });
-console.log("baseURL =", process.env.NEXT_PUBLIC_API_BASE_URL);
+console.log("baseURL =", baseURL);
 
 
 // Request interceptor (e.g. inject auth token)
